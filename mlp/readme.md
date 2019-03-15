@@ -8,7 +8,8 @@ training:
 -----
 python3 backward.py
 
->this folder have three python file :
+this folder have three python file :
+
 generateds.py
 -----
 
