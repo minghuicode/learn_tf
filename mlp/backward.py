@@ -45,7 +45,7 @@ def backward():
 		grid = np.c_[xx.ravel(),yy.ravel()]
 		probs = sess.run(y,feed_dict={x:grid})
 	plt.scatter(X[:,0],X[:,1],c=np.squeeze(Y_c))
-	plt.contour(xx,yy,probs,levels=[.5])
+	plt.contour(xx,yy,np.resize(probs,[600,600]),levels=[.5])
 	plt.show()
 
 if __name__ == '__main__':
