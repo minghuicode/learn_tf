@@ -1,7 +1,7 @@
 #coding:utf-8
 
 import tensorflow as tf 
-from tensorflow.examples.tutorials.mnist input input_data
+from tensorflow.examples.tutorials.mnist import input_data
 import awesome_forward
 import os
 import awesome_generateds
