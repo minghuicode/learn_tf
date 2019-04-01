@@ -3,7 +3,7 @@
 from PIL import Image
 import struct
 import os
-import tarfile
+import gzip
 from tensorflow.examples.tutorials.mnist import input_data
 
 def read_image(filename,savepath):
@@ -42,27 +42,34 @@ def read_label(filename,saveFilename):
 	print('save labels success')
 
 def mnist2awesome_data():
-	read_image('data/t10k-images-idx3-ubyte','awesome_data_jpg/test_jpg_10000')
-	read_label('data/t10k-labels-idx1-ubyte','awesome_data_jpg/test_jpg_10000.txt')
-	read_image('data/train-images-idx3-ubyte','awesome_data_jpg/train_jpg_60000')
-	read_label('data/train-labels-idx1-ubyte','awesome_data_jpg/train_jpg_60000.txt')
+	read_image('data/t10k-images-idx3-ubyte','data/awesome_jpg/test_jpg_10000')
+	read_label('data/t10k-labels-idx1-ubyte','data/awesome_jpg/test_jpg_10000.txt')
+	read_image('data/train-images-idx3-ubyte','data/awesome_jpg/train_jpg_60000')
+	read_label('data/train-labels-idx1-ubyte','data/awesome_jpg/train_jpg_60000.txt')
 
-def untar(filename,dirs):
-	t = tarfile.open(fname)
-	t.extractall(path=dirs)
+def untar(filename,out_dir):
+	os.system('gzip -d '+filename)
+	return 
+	dirs,fname = os.path.split(filename)
+	outname = os.path.join(out_dir,fname.split('.')[0])
+	f_in = gzip.open(filename,'rb')
+	f_out = open(outname,'w')
+	file_content = f_in.read()
+	f_out.write(file_content.decode('unicode_escape'))
+	f.close()
 
 def main():
 	# download mnist data
-	mnist = input_data.read_data_sets('data',one_hot=True)
+	mnist = input_data.read_data_sets("./data/",one_hot=True)
 	# untar mnist data 
-	untar('data/t10k-images-idx3-ubyte.gz','data')
-	untar('data/t10k-labels-idx1-ubyte.gz','data')
-	untar('data/train-images-idx3-ubyte.gz','data')
-	untar('data/train-labels-idx1-ubyte.gz','data')
+	untar('data/t10k-images-idx3-ubyte.gz','data/')
+	untar('data/t10k-labels-idx1-ubyte.gz','data/')
+	untar('data/train-images-idx3-ubyte.gz','data/')
+	untar('data/train-labels-idx1-ubyte.gz','data/')
 	# convert mnist date to jpg
-	os.mkdir('awesome_data_jpg')
-	os.mkdir('awesome_data_jpg/test_jpg_10000')
-	os.mkdir('awesome_data_jpg/train_jpg_60000')
+	os.mkdir('data/awesome_jpg')
+	os.mkdir('data/awesome_jpg/test_jpg_10000')
+	os.mkdir('data/awesome_jpg/train_jpg_60000')
 	mnist2awesome_data()
 
 if __name__ == '__main__':

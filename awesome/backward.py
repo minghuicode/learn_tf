@@ -2,9 +2,9 @@
 
 import tensorflow as tf 
 from tensorflow.examples.tutorials.mnist import input_data
-import awesome_forward
+import forward
 import os
-import awesome_generateds
+import generateds
 
 BATCH_SIZE = 200
 LEARNING_RATE_BASE = 0.1
@@ -12,14 +12,14 @@ LEARNING_RATE_DECAY = 0.99
 REGULARIZER = 0.0001
 STEPS = 50000
 MOVING_AVERAGE_DECAY = 0.99
-MODEL_SAVE_PATH = './model/'
+MODEL_SAVE_PATH = './model/awesome/'
 MODEL_NAME = 'awesome_model'
 train_num_examples = 60000
 
 def backward():
-    x = tf.placeholder(tf.float32,[None,awesome_forward.INPUT_NODE])
-    y_ = tf.placeholder(tf.float32,[None,awesome_forward.OUTPUT_NODE])
-    y = awesome_forward.forward(x,REGULARIZER)
+    x = tf.placeholder(tf.float32,[None,forward.INPUT_NODE])
+    y_ = tf.placeholder(tf.float32,[None,forward.OUTPUT_NODE])
+    y = forward.forward(x,REGULARIZER)
     global_step = tf.Variable(0,trainable=False)
 
     ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=y,labels=tf.argmax(y_,1))
@@ -40,7 +40,7 @@ def backward():
         train_op = tf.no_op(name='train')
     
     saver = tf.train.Saver()
-    img_batch, label_batch = mnist_generateds.get_tfrecord(BATCH_SIZE,isTrain=True)
+    img_batch, label_batch = generateds.get_tfrecord(BATCH_SIZE,isTrain=True)
 
     with tf.Session() as sess:
         init_op = tf.global_variables_initializer()
@@ -57,7 +57,7 @@ def backward():
             _, loss_value,step = sess.run([train_op,loss,global_step],feed_dict={x:xs,y_:ys})
             if i % 1000 == 0:
                 print('after %d training steps(s), loss on training batch is %g.' % (step,loss_value))
-                saver.save(sess.os.path.join(MODEL_SAVE_PATH,MODEL_NAME),global_step=global_step)
+                saver.save(sess,os.path.join(MODEL_SAVE_PATH,MODEL_NAME),global_step=global_step)
             
         coord.request_stop()
         coord.join(threads)

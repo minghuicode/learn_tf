@@ -4,11 +4,11 @@ import numpy as nu
 from PIL import Image
 import os 
 
-image_train_path = './awesome_data_jpg/train_jpg_60000/'
-label_train_path = './awesome_data_jpg/train_jpg_60000.txt'
+image_train_path = './data/awesome_jpg/train_jpg_60000/'
+label_train_path = './data/awesome_jpg/train_jpg_60000.txt'
 tfRecord_train = './data/awesome_train.tfrecords'
-image_test_path = './awesome_data_jpg/test_jpg_10000/'
-label_test_path = './awesome_data_jpg/test_jpg_10000.txt'
+image_test_path = './data/awesome_jpg/test_jpg_10000/'
+label_test_path = './data/awesome_jpg/test_jpg_10000.txt'
 tfRecord_test = './data/awesome_test.tfrecords'
 data_path = './data'
 resize_height = 28
@@ -23,12 +23,13 @@ def write_tfRecord(tfRecordName,image_path,label_path):
     for content in contents:
         value = content.split()
         img_path = image_path+value[0]
+        img = Image.open(img_path)
         img_raw = img.tobytes()
         labels = [0] * 10
         labels[int(value[1])] = 1
 
-        example = tf.train.Example(features=tf.train.Features(features={
-            'img_raw': tf.train.Feature(bytes_list=tf.train.ByteList(value=[img_raw])),
+        example = tf.train.Example(features=tf.train.Features(feature={
+            'img_raw': tf.train.Feature(bytes_list=tf.train.BytesList(value=[img_raw])),
             'label': tf.train.Feature(int64_list=tf.train.Int64List(value=labels))
         }))
         writer.write(example.SerializeToString())
@@ -45,7 +46,7 @@ def generate_tfRecord():
     else:
         print('directory already exists')
     write_tfRecord(tfRecord_train,image_train_path,label_train_path)
-    write_tfRecord(tf.Record_test,image_test_path,label_test_path)
+    write_tfRecord(tfRecord_test,image_test_path,label_test_path)
 
 def read_tfRecord(tfRecord_path):
     filename_queue = tf.train.string_input_producer([tfRecord_path])
@@ -69,7 +70,7 @@ def get_tfrecord(num,isTrain=True):
         tfRecord_path = tfRecord_test
     img,label = read_tfRecord(tfRecord_path)
     img_batch, label_batch = tf.train.shuffle_batch([img,label],
-                                                    bach_size=num,
+                                                    batch_size=num,
                                                     num_threads = 2,
                                                     capacity = 1000,
                                                     min_after_dequeue=700)

@@ -62,7 +62,7 @@ def mycrop():
     for i in range(0,10):
         x = i % 5
         y = i // 5
-        box = (350+x*500,600+y*700,850+x*500,1300+y*700)
+        box = (400+x*500,600+y*700,900+x*500,1300+y*700)
         region = img.crop(box)
         region.save(os.path.join('mnist/jpg',str(i)+'.jpg'))
 
