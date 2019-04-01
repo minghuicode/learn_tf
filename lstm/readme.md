@@ -1,4 +1,4 @@
-multilayer perceptron
+long short term memory
 =====
 
 this is an example of lstm(long short term memory) training process using tensorflow
@@ -8,7 +8,7 @@ training:
 -----
 python3 backward.py
 
-this folder have three python file :
+this folder have three python files :
 
 generateds.py
 -----
