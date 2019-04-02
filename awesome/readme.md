@@ -1,7 +1,7 @@
 awesome data training process
 =====
 
-this is an example of tensorflow training process via own jpg files
+this is an example of tensorflow training process via own jpg files.
 
 training:
 -----
