@@ -1,7 +1,7 @@
 awesome data training process
 =====
 
-this is an example of cnn(convolution neural network) training process via own jpg files
+this is an example of tensorflow training process via own jpg files
 
 training:
 -----
@@ -9,7 +9,7 @@ training:
 
 1. ```python3 generateds.py``` convert jpg files to tfrecord files
 
-1. ```python3 backward.py``` training the cnn model
+1. ```python3 backward.py``` training the model
 
 this folder have five python files :
 
@@ -25,7 +25,7 @@ generateds.py
 forward.py
 -----
 
-	this file define the forward of cnn
+	this file define the forward of model
 
 backward.py
 -----
